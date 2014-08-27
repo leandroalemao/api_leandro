@@ -26,13 +26,27 @@
           $('#products').append('<li>' + product.id + '|' + product.code + '|' + product.price + '</ul>');
         }
 
-        $.getJSON('/products', function(products) {
-          $.each(products, function() { addProduct(this); });
+        $('#product_search').submit(function(e) {
+          $('#products').empty();
+          $.getJSON('/products', { id: id.value , combo: combo.value }, function(products) {
+            $.each(products, function() { addProduct(this); });
+          });
+          this.reset();
+          e.preventDefault();
         });
+
       });
     </script>
   <body>
     <div id="container">
+      <form id="product_search">
+        <input type="text" name=nil id="id">
+        <select id="combo">
+            <option value="id">Id</option>
+            <option value="code">Code</option>
+        </select>
+        <input type="submit" value="Search">
+      </form>
       <h1>Products List</h1>
       <ul id="products"></ul>
     </div>

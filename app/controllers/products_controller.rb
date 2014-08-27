@@ -3,7 +3,7 @@ class ProductsController < ApplicationController
   # GET /products.json
   def index
     CsvImporter.new(Rails.root.to_s + '/db/code_test_data.csv').read_from_csv!
-    @products = Product.all
+    @products = Product.search(params[:id],params[:combo])
     render json: @products         
   end
 
@@ -18,7 +18,7 @@ class ProductsController < ApplicationController
   # POST /products
   # POST /products.json
   def create
-    @product = Product.new(params[:product])
+    @product = Product.new(product_params)
 
     if @product.save
       render json: @product, status: :created, location: @product
@@ -47,4 +47,11 @@ class ProductsController < ApplicationController
 
     head :no_content
   end
+
+  private
+
+  def product_params
+    params.require(:product).permit(:id, :code)
+  end
+
 end
