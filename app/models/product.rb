@@ -1,4 +1,7 @@
 class Product < ActiveRecord::Base
+
+  validates :code, :price, presence: true
+
   def self.search(search,combo)
 	if !search.nil? && combo  == 'id'
 	  where(['id LIKE :search', search: "%#{search}%"])

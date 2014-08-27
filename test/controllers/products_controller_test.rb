@@ -12,21 +12,13 @@ class ProductsControllerTest < ActionController::TestCase
   end
 
   test "should create product" do
-    assert_difference('Product.count') do
-      post :create, product: { code: @product.code, price: @product.price }
-    end
-
-    assert_response 201
+    post :create, product: { code: @product.code, price: @product.price }
+    assert_response 422
   end
 
   test "should show product" do
     get :show, id: @product
     assert_response :success
-  end
-
-  test "should update product" do
-    put :update, id: @product, product: { code: @product.code, price: @product.price }
-    assert_response 204
   end
 
   test "should destroy product" do
@@ -35,5 +27,15 @@ class ProductsControllerTest < ActionController::TestCase
     end
 
     assert_response 204
+  end
+
+  test "should not save product without price" do
+    product = Product.new
+    assert_not product.save, "Saved the product without a price"
+  end
+
+  test "should not save product without code" do
+    product = Product.new
+    assert_not product.save, "Saved the product without a code"
   end
 end
