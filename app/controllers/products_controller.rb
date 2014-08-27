@@ -2,9 +2,9 @@ class ProductsController < ApplicationController
   # GET /products
   # GET /products.json
   def index
+    CsvImporter.new(Rails.root.to_s + '/db/code_test_data.csv').read_from_csv!
     @products = Product.all
-
-    render json: @products
+    render json: @products         
   end
 
   # GET /products/1
