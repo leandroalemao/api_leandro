@@ -2,13 +2,13 @@ class Product < ActiveRecord::Base
 
   validates :code, :price, presence: true
 
-  def self.search(search,combo)
-	if !search.nil? && combo  == 'id'
-	  where(['id LIKE :search', search: "%#{search}%"])
-	elsif !search.nil? && combo  == 'code'
-	  where(['code LIKE :search', search: "%#{search}%"])
-	else
-	  Product.all
-	end
+  scope :search_by_id, -> (params) { where(id: params[:id]) }
+
+  def self.search(params = {})
+  	#params = {id: 1} 
+  	scope = Product.all
+  	scope = scope.search_by_id(params) if params[:id].present?
+  	scope = scope.where(code: params[:code]) if params[:code].present?
+  	scope
   end
 end

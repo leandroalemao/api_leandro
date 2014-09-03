@@ -3,7 +3,7 @@ class ProductsController < ApplicationController
   # GET /products.json
   def index
     CsvImporter.new(Rails.root.to_s + '/db/code_test_data.csv').read_from_csv!
-    @products = Product.search(params[:id],params[:combo])
+    @products = Product.search(params)
     render json: @products         
   end
 
